@@ -1,0 +1,12 @@
+numpy
+pandas
+matplotlib
+scikit-learn
+tensorflow
+xgboost
+joblib
+pandapower
+simbench
+numba
+jupyter
+ipykernel
