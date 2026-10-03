@@ -1,0 +1,24 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+.venv/
+
+# Secrets
+.env
+
+# IDE / OS files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Generated digital-twin outputs
+digital_twin/output/
+
+# Temporary experiment outputs
+results/experiments/
