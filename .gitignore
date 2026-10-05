@@ -22,3 +22,6 @@ digital_twin/output/
 
 # Temporary experiment outputs
 results/experiments/
+digital_twin/data/*.pkl
+
+# Ignore downloaded ACN cache files
