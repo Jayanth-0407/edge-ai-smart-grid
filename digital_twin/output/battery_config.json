@@ -1,0 +1,10 @@
+{
+  "bus": 30944,
+  "p_max_mw": 5.0,
+  "e_cap_mwh": 20.0,
+  "soc_min": 0.1,
+  "soc_max": 0.9,
+  "soc_init": 0.5,
+  "eta_c": 0.95,
+  "eta_d": 0.95
+}
