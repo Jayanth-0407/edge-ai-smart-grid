@@ -1,0 +1,27 @@
+rule,group,weight,IF,THEN
+A1,A,1.0,(line_loading_pct is OVERLOADED OR trafo_loading_pct is OVERLOADED),"ev_limit_pct = LOW, flex_reduction_pct = LARGE, grid_state_score = CRITICAL"
+A2,A,1.0,(v_min_pu is LOW AND (line_loading_pct is HIGH OR trafo_loading_pct is HIGH)),"ev_limit_pct = LOW, flex_reduction_pct = LARGE, grid_state_score = CRITICAL"
+A3,A,1.0,(v_min_pu is LOW AND NOT ((line_loading_pct is OVERLOADED OR trafo_loading_pct is OVERLOADED) OR (v_min_pu is LOW AND (line_loading_pct is HIGH OR trafo_loading_pct is HIGH)))),"ev_limit_pct = LOW, flex_reduction_pct = SMALL, grid_state_score = STRESSED"
+A4,A,1.0,(line_loading_pct is HIGH AND NOT ((line_loading_pct is OVERLOADED OR trafo_loading_pct is OVERLOADED) OR (v_min_pu is LOW AND (line_loading_pct is HIGH OR trafo_loading_pct is HIGH)))),"ev_limit_pct = MEDIUM, flex_reduction_pct = SMALL, grid_state_score = STRESSED"
+A5,A,1.0,(trafo_loading_pct is HIGH AND NOT ((line_loading_pct is OVERLOADED OR trafo_loading_pct is OVERLOADED) OR (v_min_pu is LOW AND (line_loading_pct is HIGH OR trafo_loading_pct is HIGH)))),"ev_limit_pct = MEDIUM, flex_reduction_pct = SMALL, grid_state_score = STRESSED"
+A6,A,1.0,(ev_load_mw is HIGH AND (line_loading_pct is HIGH OR trafo_loading_pct is HIGH)),ev_limit_pct = LOW
+A7,A,1.0,((v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED)) AND NOT battery_soc_pct is LOW),battery_cmd = DISCHARGE
+B1,B,0.8,(NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED)) AND ev_load_mw is HIGH AND (line_loading_pct is NORMAL OR trafo_loading_pct is NORMAL)),ev_limit_pct = MEDIUM
+C1,C,1.0,((price_eur_mwh is HIGH + price_eur_mwh is SPIKE) AND NOT battery_soc_pct is LOW),battery_cmd = DISCHARGE
+C2,C,1.0,price_eur_mwh is SPIKE,"ev_limit_pct = MEDIUM, flex_reduction_pct = SMALL"
+C3,C,0.8,(price_eur_mwh is HIGH AND ev_load_mw is HIGH),ev_limit_pct = MEDIUM
+C4,C,0.6,(price_eur_mwh is HIGH AND NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED))),flex_reduction_pct = SMALL
+D1,D,1.0,(NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED)) AND NOT (price_eur_mwh is HIGH + price_eur_mwh is SPIKE) AND NOT stability_risk is HIGH),"ev_limit_pct = HIGH, flex_reduction_pct = NONE, grid_state_score = NORMAL"
+D2,D,1.0,(NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED)) AND price_eur_mwh is NORMAL AND battery_soc_pct is NORMAL),battery_cmd = IDLE
+D3,D,1.0,(NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED)) AND price_eur_mwh is LOW AND NOT battery_soc_pct is HIGH),battery_cmd = CHARGE
+D4,D,0.8,(NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED)) AND price_eur_mwh is NORMAL AND battery_soc_pct is LOW),battery_cmd = CHARGE
+D5,D,1.0,(NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED)) AND (price_eur_mwh is HIGH + price_eur_mwh is SPIKE) AND NOT stability_risk is HIGH),grid_state_score = NORMAL
+D6,D,1.0,(NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED)) AND battery_soc_pct is HIGH AND NOT (price_eur_mwh is HIGH + price_eur_mwh is SPIKE)),battery_cmd = IDLE
+E1,E,1.0,(renewable_mw is HIGH AND NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED)) AND NOT battery_soc_pct is HIGH),"battery_cmd = CHARGE, ev_limit_pct = HIGH, flex_reduction_pct = NONE"
+E2,E,1.0,(v_min_pu is HIGH AND NOT battery_soc_pct is HIGH),"battery_cmd = CHARGE, ev_limit_pct = HIGH"
+E3,E,1.0,(v_min_pu is HIGH AND battery_soc_pct is HIGH),"battery_cmd = IDLE, ev_limit_pct = HIGH"
+E4,E,1.0,(renewable_mw is HIGH AND battery_soc_pct is HIGH AND NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED))),"battery_cmd = IDLE, ev_limit_pct = HIGH"
+F1,F,1.0,((v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED)) AND battery_soc_pct is LOW),battery_cmd = IDLE
+F2,F,1.0,((price_eur_mwh is HIGH + price_eur_mwh is SPIKE) AND battery_soc_pct is LOW),battery_cmd = IDLE
+G1,G,0.8,(stability_risk is HIGH AND (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED))),"ev_limit_pct = LOW, flex_reduction_pct = LARGE, grid_state_score = CRITICAL"
+G2,G,0.7,(stability_risk is HIGH AND NOT (v_min_pu is LOW OR (line_loading_pct is HIGH + line_loading_pct is OVERLOADED) OR (trafo_loading_pct is HIGH + trafo_loading_pct is OVERLOADED))),"ev_limit_pct = MEDIUM, grid_state_score = STRESSED"
